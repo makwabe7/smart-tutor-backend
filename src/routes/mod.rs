@@ -1,0 +1,9 @@
+pub mod admin;
+pub mod auth;
+pub mod centres;
+pub mod classrooms;
+pub mod notifications;
+pub mod parents;
+pub mod reviews;
+pub mod students;
+pub mod teachers;

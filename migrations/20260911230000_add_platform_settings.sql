@@ -1,0 +1,11 @@
+CREATE TABLE platform_settings (
+    id BOOLEAN PRIMARY KEY DEFAULT TRUE CHECK (id),
+    maintenance BOOLEAN NOT NULL DEFAULT FALSE,
+    signups BOOLEAN NOT NULL DEFAULT TRUE,
+    payments BOOLEAN NOT NULL DEFAULT TRUE,
+    ai_recommendations BOOLEAN NOT NULL DEFAULT TRUE,
+    public_teacher_directory BOOLEAN NOT NULL DEFAULT TRUE,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+INSERT INTO platform_settings (id) VALUES (TRUE) ON CONFLICT (id) DO NOTHING;

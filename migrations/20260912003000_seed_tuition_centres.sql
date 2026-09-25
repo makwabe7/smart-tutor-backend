@@ -1,0 +1,21 @@
+-- Development/demo centres for the public catalogue and centre cards.
+INSERT INTO tuition_centres
+  (owner_id, slug, name, tagline, county, estate, address, description, subjects, grade_levels, monthly_fee, student_count, rating, review_count, image_url, is_active)
+SELECT u.id, centre_data.slug, centre_data.name, centre_data.tagline, centre_data.county, centre_data.estate, centre_data.address, centre_data.description,
+       centre_data.subjects, centre_data.grade_levels, centre_data.monthly_fee, centre_data.student_count, centre_data.rating, centre_data.review_count, centre_data.image_url, TRUE
+FROM users u
+JOIN (VALUES
+  ('demo.mercy.wanjiru@soma.test', 'excel-tuition-centre', 'Excel Tuition Centre', 'Focused learning. Consistent results.', 'Nairobi', 'Kasarani', 'Kasarani Mall, 2nd Floor', 'Small classes, weekly progress reports, and a dedicated KCSE revision programme for learners who want structured support.', ARRAY['Mathematics', 'English', 'Kiswahili', 'Physics', 'Chemistry', 'Biology']::TEXT[], ARRAY['Grade 4–8', 'Form 1–4']::TEXT[], 4500, 240, 4.7, 312, 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80'),
+  ('demo.brian.otieno@soma.test', 'bright-minds-hub', 'Bright Minds Hub', 'Curious learners. Strong foundations.', 'Nairobi', 'Roysambu', 'Lumumba Drive, Roysambu', 'An engaging after-school centre for science, maths, and guided homework support.', ARRAY['Mathematics', 'Physics', 'Chemistry', 'Biology']::TEXT[], ARRAY['Grade 7–8', 'Form 1–4']::TEXT[], 5200, 180, 4.8, 196, 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80'),
+  ('demo.aisha.hassan@soma.test', 'apex-learning-centre', 'Apex Learning Centre', 'Every learner can excel.', 'Nairobi', 'Mirema', 'Mirema Drive, near TRM', 'Tutoring, study skills, and parent updates in a calm learner-centred environment.', ARRAY['Mathematics', 'English', 'Kiswahili', 'Sciences']::TEXT[], ARRAY['Grade 4–8', 'Form 1–4']::TEXT[], 4800, 150, 4.6, 144, 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=1200&q=80'),
+  ('demo.daniel.mwangi@soma.test', 'summit-tutors', 'Summit Tutors', 'Aim higher, learn smarter.', 'Nairobi', 'Zimmerman', 'Thika Road, Zimmerman', 'Weekend and evening tuition with focused subject clinics, mock exams, and digital learning resources.', ARRAY['Mathematics', 'Physics', 'Chemistry', 'Computer Studies', 'English']::TEXT[], ARRAY['Form 1–4']::TEXT[], 5500, 320, 4.9, 287, 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80'),
+  ('demo.grace.nyambura@soma.test', 'pinnacle-academy', 'Pinnacle Academy', 'Steady progress, every term.', 'Nairobi', 'Kilimani', 'Wood Avenue, Kilimani', 'A supportive academic space with humanities, languages, and science tuition for upper primary and secondary learners.', ARRAY['English', 'Kiswahili', 'History', 'Geography', 'Biology']::TEXT[], ARRAY['Grade 4–8', 'Form 1–4']::TEXT[], 5000, 110, 4.5, 98, 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80'),
+  ('demo.kevin.kiptoo@soma.test', 'genius-hub', 'Genius Hub', 'A practical route to better grades.', 'Kiambu', 'Ruiru', 'Ruiru Town, next to the bus park', 'STEM-led sessions, small revision groups, and flexible weekday or weekend timetables.', ARRAY['Mathematics', 'Physics', 'Chemistry', 'Computer Studies']::TEXT[], ARRAY['Form 1–4']::TEXT[], 4300, 195, 4.7, 167, 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80')
+) AS centre_data(owner_email, slug, name, tagline, county, estate, address, description, subjects, grade_levels, monthly_fee, student_count, rating, review_count, image_url)
+  ON centre_data.owner_email = u.email
+ON CONFLICT (slug) DO UPDATE SET
+  name = EXCLUDED.name, tagline = EXCLUDED.tagline, county = EXCLUDED.county, estate = EXCLUDED.estate,
+  address = EXCLUDED.address, description = EXCLUDED.description, subjects = EXCLUDED.subjects,
+  grade_levels = EXCLUDED.grade_levels, monthly_fee = EXCLUDED.monthly_fee, student_count = EXCLUDED.student_count,
+  rating = EXCLUDED.rating, review_count = EXCLUDED.review_count, image_url = EXCLUDED.image_url,
+  is_active = TRUE, updated_at = NOW();

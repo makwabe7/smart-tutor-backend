@@ -1,0 +1,11 @@
+pub mod admin;
+pub mod availability;
+pub mod bookings;
+pub mod centres;
+pub mod classrooms;
+pub mod notifications;
+pub mod parents;
+pub mod reviews;
+pub mod students;
+pub mod teachers;
+pub mod users;
